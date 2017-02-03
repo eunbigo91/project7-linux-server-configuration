@@ -14,23 +14,25 @@ A baseline installation of a Linux distribution on a virtual machine and prepare
 `sudo adduser grader`
 
 ### Give the grader the permission to sudo
+  -G = To add a supplementary groups.
+  -a = To add anyone of the group to a secondary group.
 `sudo usermod -aG sudo grader`
 
 ### Update all currently installed packages
-`
+```
 apt-get update
 apt-get upgrade
-`
+```
 
 ### Set up SSH keys for user *grader*
-`
+```
 mkdir /home/grader/.ssh
 chown grader:grader /home/grader/.ssh
 chmod 700 /home/grader/.ssh
 cp /root/.ssh/authorized_keys /home/grader/.ssh/
 chown grader:grader /home/grader/.ssh/authorized_keys
 chmod 644 /home/grader/.ssh/authorized_keys
-`
+```
 
 - Login using `ssh -i ~/.ssh/udacity_key.rsa grader@52.32.134.3` command
 
@@ -46,7 +48,7 @@ Change Port 22 to 2200
   2. Allow outgoing connections :
   `sudo ufw default allow outgoing`
   3. Allow incoming connections for SSH (port 2200) :
-  `sudo ufw allow 2200/tcp`
+  `sudo ufw allow 2200/tcp` or `sudo ufw allow ssh`
   4. Allow incoming connections for HTTP (port 80) :
   `sudo ufw allow www`
   5. Allow incoming connections for NTP (port 123) :
@@ -58,11 +60,11 @@ Change Port 22 to 2200
 `sudo timedatectl set-timezone UTC`
 
 ### Install Apache to serve a Python mod_wsgi application
-`
+```
 sudo apt-get install apache2
 sudo apt-get install libapache2-mod-wsgi
 sudo a2enmod wsgi
-`
+```
 
 ### Install git and clone my Item Catalog project
   - Install git :
@@ -70,14 +72,14 @@ sudo a2enmod wsgi
   - Clone my Item Catalog project :
   `sudo git clone https://github.com/eunbigo91/project5-item-catalog.git /var/www/catalog/catalog`
   - Prevent .git directory from being publicly accessed :
-  `
+  ```
   sudo nano /var/www/catalog/catalog/.git/htaccess
 
   <Directory .git>
     order allow,deny
     deny from all
   </Directory>
-  `
+  ```
 
 ### Install and configure PostgreSQL
   - Install PostgreSQL :
@@ -120,7 +122,7 @@ sudo a2enmod wsgi
 
   9. Create a virtual host configure file :
   `sudo nano /etc/apache2/site-available/catalog.conf`
-  `
+  ```
   <VirtualHost *:80>
         ServerName 52.32.134.3
         ServerAlias ec2-52-32-134-3.us-west-2.compute.amazonaws.com
@@ -142,32 +144,34 @@ sudo a2enmod wsgi
         LogLevel warn
         CustomLog ${APACHE_LOG_DIR}/access.log combined
   </VirtualHost>
-  `
+  ```
   10. Enable the virtual host :
   `sudo a2dissite 000-default.conf
   sudo a2ensite catalog`
   11. Create and configure 'catalog.wsgi' :
   `sudo nano /var/www/catalog/catalog.wsgi`
-  `#!/usr/bin/python
+  ```
+  #!/usr/bin/python
   import sys
   import logging
   logging.basicConfig(stream=sys.stderr)
   sys.path.insert(0, '/var/www/catalog/')
 
   from catalog import app as application
-  application.secret_key = 'IS_THIS_REALLY_SECRET'`
+  application.secret_key = 'IS_THIS_REALLY_SECRET'
+  ```
   12. Restart Apache:
   `sudo service apache2 restart`
 
 ### Install modules & packages
-`
+```
 source venv/bin/activate
 sudo pip install httplib2
 sudo pip install requests
 sudo pip install oauth2client
 sudo pip install sqlalchemy
 sudo apt-get install python-psycopg2
-`
+```
 
 ### Update the OAuth client secrets file (Google & Facebook)
 Change the path 'client_secrets.json' and 'fb_client_secrets.json' in __init__.py to '/var/www/catalog/catalog/client_secrets.json' and '/var/www/catalog/catalog/fb_client_secrets.json'.
