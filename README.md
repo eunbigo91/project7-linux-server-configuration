@@ -1,6 +1,6 @@
 # Project: Linux Server Configuration
 
-A baseline installation of a Linux distribution on a virtual machine and prepare it to host a Flask web application, to include installing updates, securing it from a number of attack vectors and installing/configuring web and database servers.
+A baseline installation of a Linux distribution on a virtual machine to host a Flask web application. This includes the installation of updates, securing it from a number of attack vectors and installing/configuring web and database servers.
 
 
 ## Server details
