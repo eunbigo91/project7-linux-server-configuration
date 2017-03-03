@@ -4,10 +4,10 @@ A baseline installation of a Linux distribution on a virtual machine to host a F
 
 
 ## Server details
-- IP address: `52.32.134.3`
 - SSH port: `2200`
+- IP address: `52.32.134.3`
 - URL: `http://ec2-52-32-134-3.us-west-2.compute.amazonaws.com/`
-
+-> It is not working now
 
 ## Configuration changes
 ### Create a new user named grader
@@ -38,7 +38,6 @@ chmod 644 /home/grader/.ssh/authorized_keys
 
 ### Change the SSH port from 22 to 2200
 `sudo nano /etc/ssh/sshd_config`
-Change Port 22 to 2200
 
 - Login using `ssh -i ~/.ssh/udacity_key.rsa grader@52.32.134.3 -p 2200` command
 
@@ -66,15 +65,24 @@ sudo apt-get install libapache2-mod-wsgi
 sudo a2enmod wsgi
 ```
 
+### Install modules & packages
+```
+source venv/bin/activate
+sudo pip install httplib2
+sudo pip install requests
+sudo pip install oauth2client
+sudo pip install sqlalchemy
+sudo apt-get install python-psycopg2
+```
+
 ### Install git and clone my Item Catalog project
   - Install git :
   `sudo apt-get install git`
   - Clone my Item Catalog project :
   `sudo git clone https://github.com/eunbigo91/project5-item-catalog.git /var/www/catalog/catalog`
   - Prevent .git directory from being publicly accessed :
+  `sudo nano /var/www/catalog/catalog/.git/htaccess`
   ```
-  sudo nano /var/www/catalog/catalog/.git/htaccess
-
   <Directory .git>
     order allow,deny
     deny from all
@@ -85,7 +93,7 @@ sudo a2enmod wsgi
   - Install PostgreSQL :
   `sudo apt-get install postgresql`
   - Check remote connection is not allowed :
-  `sudo cat /etc/postgresql/9.3/main/pg_hba.conf
+  `sudo cat /etc/postgresql/9.3/main/pg_hba.conf`
   - Create a new user named 'catalog' :
   `sudo -u postgres createuser -p catalog`
   - Give a permission to my catalog application database :
@@ -162,16 +170,6 @@ sudo a2enmod wsgi
   ```
   12. Restart Apache:
   `sudo service apache2 restart`
-
-### Install modules & packages
-```
-source venv/bin/activate
-sudo pip install httplib2
-sudo pip install requests
-sudo pip install oauth2client
-sudo pip install sqlalchemy
-sudo apt-get install python-psycopg2
-```
 
 ### Update the OAuth client secrets file (Google & Facebook)
 Change the path 'client_secrets.json' and 'fb_client_secrets.json' in __init__.py to '/var/www/catalog/catalog/client_secrets.json' and '/var/www/catalog/catalog/fb_client_secrets.json'.
