@@ -167,8 +167,10 @@ sudo apt-get install python-psycopg2
   </VirtualHost>
   ```
   10. Enable the virtual host :
-  `sudo a2dissite 000-default.conf
-  sudo a2ensite catalog`
+  ```
+  sudo a2dissite 000-default.conf
+  sudo a2ensite catalog
+  ```
   11. Create and configure 'catalog.wsgi' :
   `sudo nano /var/www/catalog/catalog.wsgi`
   ```
