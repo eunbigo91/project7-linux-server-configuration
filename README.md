@@ -14,8 +14,8 @@ A baseline installation of a Linux distribution on a virtual machine to host a F
 `sudo adduser grader`
 
 ### Give the grader the permission to sudo
-  -G = To add a supplementary groups.
-  -a = To add anyone of the group to a secondary group.
+  - -G = To add a supplementary groups.
+  - -a = To add anyone of the group to a secondary group.
 `sudo usermod -aG sudo grader`
 
 ### Update all currently installed packages
@@ -81,8 +81,9 @@ sudo apt-get install python-psycopg2
   - Clone my Item Catalog project :
   `sudo git clone https://github.com/eunbigo91/project5-item-catalog.git /var/www/catalog/catalog`
   - Prevent .git directory from being publicly accessed :
-  `sudo nano /var/www/catalog/catalog/.git/htaccess`
   ```
+  sudo nano /var/www/catalog/catalog/.git/htaccess
+
   <Directory .git>
     order allow,deny
     deny from all
@@ -97,19 +98,31 @@ sudo apt-get install python-psycopg2
   - Create a new user named 'catalog' :
   `sudo -u postgres createuser -p catalog`
   - Give a permission to my catalog application database :
-  `sudo -u postgres psql
+  ```
+  sudo -u postgres psql
+  
   CREATE USER catalog WITH PASSWORD 'passwd';
+  
   ALTER USER catalog CREATEDB;
+  
   CREATE DATABASE catalog WITH OWNER catalog;
+  
   \c catalog
+  
   REVOKE ALL ON SCHEMA public FROM public;
+  
   GRANT ALL ON SCHEMA public TO catalog;
-  \q`
+  
+  \q
+  ```
   - Create postgreSQl database schema :
   `python database_setup.py`
   - Open the database setup file and change the line with 'engine' :
-  `sudo nano database_setup.py
-  engine = create_engine('postgresql://catalog:passwd@localhost/catalog')`
+  ```
+  sudo nano database_setup.py  
+  
+  engine = create_engine('postgresql://catalog:passwd@localhost/catalog')
+  ```
   - Open applicaion.py and change the same line :
   `sudo nano application.py`
   - Rename applicaion.py :
@@ -190,9 +203,9 @@ Change the path 'client_secrets.json' and 'fb_client_secrets.json' in __init__.p
 
 
 ## Third party library
-[PostgreSQL](https://www.postgresql.org/)
-[Flask](http://flask.pocoo.org/)
-[Google OAuth 2.0](https://console.developers.google.com/apis)
-[Facebook OAuth](https://developers.facebook.com/apps/)
+[PostgreSQL](https://www.postgresql.org/)  
+[Flask](http://flask.pocoo.org/)  
+[Google OAuth 2.0](https://console.developers.google.com/apis)  
+[Facebook OAuth](https://developers.facebook.com/apps/)  
 
 
